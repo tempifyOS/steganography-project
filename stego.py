@@ -4,6 +4,18 @@
 # Repository: https://github.com/tempifyOS/steganography-project
 import argparse
 import time
+import math
+
+def hide(message_file,stego_file,cover_file):
+    print("Hide code goes here... Delete this")
+    #TODO: Hide {message_file} in {cover_file} and write to {stego_file}
+    #TODO: Write to hidden file with hidden content
+    
+def extract(stego_file, message_file):
+    print("Extract code goes here... Delete this")
+    
+    #TODO: Extract data from {stego_file} to {message_file}
+    #TODO: Write extracted data to a file 
 
 def main():
     ascii_art = """
