@@ -17,6 +17,37 @@ def extract(stego_file, message_file):
     #TODO: Extract data from {stego_file} to {message_file}
     #TODO: Write extracted data to a file 
 
+def find_runs_and_convert_to_output_string(s: str, M: int) -> str:
+    """
+    Finds all non-overlapping runs of at least length M in the binary string s.
+    If the run length is even, then append a '0' to the output.
+    If the run length is odd, then append a '1' to the output.
+
+    Parameters:
+    - s (str): A string of '0's and '1's.
+    - M (int): The minimum run length.
+
+    Returns:
+    - str: A string of '0's and '1's - this should be converted into the output file/message
+    """
+    if M <= 0:
+        raise ValueError("Minimum length M must be greater than 0.")
+
+    i = 0
+    n = len(s)
+    output = ""
+
+    while i < n:
+        run_char = s[i]
+        start = i
+        while i < n and s[i] == run_char:
+            i += 1
+        run_length = i - start
+        if run_length >= M:
+            output += '1' if run_length     % 2 == 1 else '0'
+
+    return output
+
 def main():
     ascii_art = """
     ------------------------------------------------------------------
