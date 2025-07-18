@@ -17,6 +17,16 @@ def extract(stego_file, message_file):
     #TODO: Extract data from {stego_file} to {message_file}
     #TODO: Write extracted data to a file 
 
+def file_to_binary_string(filepath):
+    with open(filepath, 'rb') as f:
+        data = f.read()
+    binary_string = ''.join(f'{byte:08b}' for byte in data)
+    return binary_string
+
+    #example usage
+    #binary = file_to_binary_string('message.txt')
+    #print(binary)
+
 def find_runs_and_convert_to_output_string(s: str, M: int) -> str:
     """
     Finds all non-overlapping runs of at least length M in the binary string s.
