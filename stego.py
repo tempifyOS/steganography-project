@@ -5,6 +5,8 @@
 import argparse
 import time
 import math
+import sys
+from PIL import Image
 
 def hide(message_file,stego_file,cover_file):
     print("Hide code goes here... Delete this")
@@ -18,10 +20,16 @@ def extract(stego_file, message_file):
     #TODO: Write extracted data to a file 
 
 def file_to_binary_string(filepath):
-    with open(filepath, 'rb') as f:
-        data = f.read()
-    binary_string = ''.join(f'{byte:08b}' for byte in data)
-    return binary_string
+    # read an arbitrary file in binary mode and return its contents as a string of '0' and '1' chars.
+    try:
+        with open(filepath, 'rb') as f:
+            data = f.read()
+        binary_string = ''.join(f'{byte:08b}' for byte in data)
+        return binary_string
+    except Exception as e:
+        print(f"Error: cannot open file '{filepath}': {e}", file=sys.stderr)
+        sys.exit(1)
+    return ''.join(f'{byte:08b}' for byte in data)
 
     #example usage
     #binary = file_to_binary_string('message.txt')
