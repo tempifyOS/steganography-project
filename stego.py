@@ -17,7 +17,12 @@ Dependencies:
 import argparse
 import time
 import sys
-from PIL import Image
+
+try:
+    from PIL import Image
+except ImportError:
+    print("(⚠): ERROR: Dependency 'PILLOW' not installed. Please install by running: pip install Pillow", file=sys.stderr)
+    sys.exit(1)
 
 
 def file_to_binary_string(filepath):
