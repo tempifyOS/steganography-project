@@ -217,7 +217,6 @@ Arguments for extract:
   -s, --stego      Path to stego image (1-bit or 8-bit BMP)
   -o, --output     Recovered message file output (default: message.bin)
   -M, --min-run    Minimum RLE run length used during extraction (default: 2)
-  -T, --threshold  Unused (symmetry with hide)
 """)
         sys.exit(0)
 
