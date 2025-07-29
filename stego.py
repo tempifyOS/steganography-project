@@ -19,6 +19,7 @@ import time
 import sys
 from PIL import Image
 
+
 def file_to_binary_string(filepath):
     # read an arbitrary file in binary mode and return its contents as a
     # string of '0' and '1' chars.
@@ -30,6 +31,7 @@ def file_to_binary_string(filepath):
         sys.exit(1)
     # convert each byte to its 8-bit binary representation
     return ''.join(f'{byte:08b}' for byte in data)
+
 
 def find_runs_and_convert_to_output_string(s: str, M: int) -> str:
     """
@@ -55,6 +57,7 @@ def find_runs_and_convert_to_output_string(s: str, M: int) -> str:
             output_bits.append('1' if run_len % 2 else '0')
 
     return ''.join(output_bits)
+
 
 def hide(message_file, cover_file, stego_file, M, threshold):
     # hides the content of 'message_file' within the 'cover_file' using run length encoding (RLE)
@@ -121,6 +124,7 @@ def hide(message_file, cover_file, stego_file, M, threshold):
         print(f"Error: cannot save stego file '{stego_file}': {e}", file=sys.stderr)
         sys.exit(1)
 
+
 def extract(stego_file, message_file, M, threshold):
     # recover hidden data from 'stego_file' by scanning runs of length >= M
     # (threshold arg unused here, but kept for symmetry)
@@ -165,6 +169,7 @@ def loading_HIDE(message_file, stego_file, cover_file):
     time.sleep(0.5); print('█████████▒ 90%')
     time.sleep(1);   print('██████████ 100%')
 
+#aesthetic loading function
 def loading_EXTRACT(stego_file, message_file):
     print(f"-------------------------Loading...---------------------------\n(/): EXTRACT MODE: Extracting hidden data in '{stego_file}' to '{message_file}'")
     print(f"(→): Extracting data to {message_file}")
@@ -174,10 +179,10 @@ def loading_EXTRACT(stego_file, message_file):
     time.sleep(0.5); print("████▒▒▒▒▒▒ 40%")
     time.sleep(0.5); print("█████▒▒▒▒▒ 50%")
     time.sleep(0.5); print("██████▒▒▒▒ 60%")
-    time.sleep(0.5); print("███████▒▒▒ 70%")
-    time.sleep(0.5); print('████████▒▒ 80%')
-    time.sleep(0.5); print('█████████▒ 90%')
-    time.sleep(1);   print('██████████ 100%')
+    time.sleep(0.5);print("███████▒▒▒ 70%")
+    time.sleep(0.5);print('████████▒▒ 80%')
+    time.sleep(0.5);print('█████████▒ 90%')
+    time.sleep(1);  print('██████████ 100%')
 
 def main():
     ascii_art = """
@@ -189,25 +194,50 @@ def main():
     """
     print(ascii_art)
 
-    parser = argparse.ArgumentParser(prog='stego.py',
-        description='Hide/Extract Data within a 1-bit or 8-bit BMP using RLE')
+    parser = argparse.ArgumentParser(
+        prog='stego.py',
+        description='Hide/Extract Data within a 8-bit grayscale BMP using RLE'
+    )
+    # If no command given, show help + examples + argument definitions and exit
+    if len(sys.argv) == 1:
+        parser.print_help()
+        print("""
+Examples:
+  python stego.py hide -m secret.txt -c cover.bmp -o stego.bmp -M 2 -T 128
+  python stego.py extract -s stego.bmp -o recovered.bin -M 2
+
+Arguments for hide:
+  -m, --message    Path to message file to hide
+  -c, --cover      Path to cover (1-bit or 8-bit BMP)
+  -o, --output     Stego image output file (default: stego.bmp)
+  -M, --min-run    Minimum RLE run length (default: 2)
+  -T, --threshold  Grayscale threshold for binarization (default: 128)
+
+Arguments for extract:
+  -s, --stego      Path to stego image (1-bit or 8-bit BMP)
+  -o, --output     Recovered message file output (default: message.bin)
+  -M, --min-run    Minimum RLE run length used during extraction (default: 2)
+  -T, --threshold  Unused (symmetry with hide)
+""")
+        sys.exit(0)
+
     subs = parser.add_subparsers(dest='command', required=True)
 
     # Hide mode
     h = subs.add_parser('hide', help='Embed a message into a cover image')
-    h.add_argument('-m','--message', required=True, help='Path to message file')
-    h.add_argument('-c','--cover',   required=True, help='Path to cover image (1-bit or 8-bit BMP)')
-    h.add_argument('-o','--output',  default='stego.bmp', help='Output stego image file')
-    h.add_argument('-M','--min-run', type=int, default=2, help='Minimum run length (default: 2)')
-    h.add_argument('-T','--threshold', type=int, default=128,
+    h.add_argument('-m', '--message', required=True, help='Path to message file')
+    h.add_argument('-c', '--cover',   required=True, help='Path to cover image (1-bit or 8-bit BMP)')
+    h.add_argument('-o', '--output',  default='stego.bmp', help='Output stego image file')
+    h.add_argument('-M', '--min-run', type=int, default=2, help='Minimum run length (default: 2)')
+    h.add_argument('-T', '--threshold', type=int, default=128,
                    help='Threshold for grayscale→bit (default: 128)')
 
     # Extract mode
     e = subs.add_parser('extract', help='Extract a message from a stego image')
-    e.add_argument('-s','--stego',   required=True, help='Path to stego image (1-bit or 8-bit BMP)')
-    e.add_argument('-o','--output',  default='message.bin',   help='Recovered message file')
-    e.add_argument('-M','--min-run', type=int, default=2,     help='Minimum run length used during extraction')
-    e.add_argument('-T','--threshold', type=int, default=128, help='(unused) just symmetry with hide')
+    e.add_argument('-s', '--stego',   required=True, help='Path to stego image (1-bit or 8-bit BMP)')
+    e.add_argument('-o', '--output',  default='message.bin',   help='Recovered message file')
+    e.add_argument('-M', '--min-run', type=int, default=2,     help='Minimum run length used during extraction')
+    e.add_argument('-T', '--threshold', type=int, default=128, help='(unused) just symmetry with hide')
 
     args = parser.parse_args()
 
