@@ -216,6 +216,9 @@ Arguments for extract:
   -o, --output     Recovered message file output (default: message.bin)
   -M, --min-run    Minimum RLE run length used during extraction (default: 2)
 """)
+        
+        if getattr(sys, 'frozen', False):  # Detect if running from PyInstaller bundle
+            input("\nPress Enter to exit...")   # Pause after running by double-clicking the .exe
         sys.exit(0)
 
     subs = parser.add_subparsers(dest='command', required=True)
@@ -245,6 +248,8 @@ Arguments for extract:
         loading_EXTRACT(args.stego, args.output)
         extract(args.stego, args.output, args.min_run, args.threshold)
         print(f"(✓): Extracted hidden data to '{args.output}' using M={args.min_run}'")
+    
+
 
 if __name__ == "__main__":
     main()
