@@ -1,0 +1,9 @@
+---
+app:
+  name: SampleApp
+  version: "1.2.3"
+users:
+  - name: alice
+    role: admin
+  - name: bob
+    role: user

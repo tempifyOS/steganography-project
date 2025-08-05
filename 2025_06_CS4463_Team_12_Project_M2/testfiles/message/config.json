@@ -1,0 +1,9 @@
+{
+  "username": "user1",
+  "timeout": 30,
+  "enableFeatureX": true,
+  "servers": [
+    "alpha.example.com",
+    "beta.example.com"
+  ]
+}
